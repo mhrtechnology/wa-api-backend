@@ -31,6 +31,12 @@ export interface ConnEventTypes {
   'conn.authenticated': undefined;
   'conn.logout': undefined;
   /**
+   * WPP.on('conn.logout:reason', () => {
+   *   // Your code
+   * });
+   */
+  'conn.logout_reason': string;
+  /**
    * Triggered when the interface is booting
    *
    * @example

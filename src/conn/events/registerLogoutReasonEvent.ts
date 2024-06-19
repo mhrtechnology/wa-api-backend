@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-import './registerAuthCodeChangeEvent';
-import './registerAuthenticatedEvent';
-import './registerLogoutEvent';
-import './registerLogoutReasonEvent';
-import './registerMainInit';
-import './registerMainLoadedEvent';
-import './registerMainReadyEvent';
-import './registerNeedsUpdateEvent';
-import './registerOnlineEvent';
-import './registerQRCodeIdleEvent';
-import './registerRequireAuthEvent';
+import { internalEv } from '../../eventEmitter';
+import * as webpack from '../../webpack';
+import { wrapModuleFunction } from '../../whatsapp/exportModule';
+import { getPrevLogoutReasonCode } from '../../whatsapp/functions';
+
+webpack.onInjected(registerLogoutReasonEvent);
+
+function registerLogoutReasonEvent() {
+  setTimeout(() => {
+    wrapModuleFunction(getPrevLogoutReasonCode, async (func, ...args) => {
+      const value = await getPrevLogoutReasonCode();
+      alert(value);
+      internalEv.emit('conn.logout_reason', value);
+      return func(...args);
+    });
+  }, 1000);
+}

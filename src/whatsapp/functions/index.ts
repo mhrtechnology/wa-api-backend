@@ -65,6 +65,7 @@ export * from './getNextLabelId';
 export * from './getNumChatsPinned';
 export * from './getOrderInfo';
 export * from './getParticipants';
+export * from './getPrevLogoutReasonCode';
 export * from './getPushname';
 export * from './getQuotedMsgObj';
 export * from './getReactions';
