@@ -37,6 +37,7 @@ export * as ev from './eventEmitter';
 export * as community from './community';
 export * as group from './group';
 export * as labels from './labels';
+export * as payment from './payment';
 export * as profile from './profile';
 export * as status from './status';
 export * as util from './util';
