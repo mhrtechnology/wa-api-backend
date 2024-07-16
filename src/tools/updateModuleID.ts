@@ -40,6 +40,8 @@ dirs.push(
 async function start() {
   const { browser, page } = await getPage();
 
+  page.unrouteAll({ behavior: 'ignoreErrors' });
+
   page.addInitScript(() => {
     setInterval(() => {
       (window as any).wppForceMainLoad = true;
