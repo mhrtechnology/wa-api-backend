@@ -55,15 +55,12 @@ async function start() {
       console.log('browser', message.type(), message.text());
     }
   });
-
-  console.log('Carregando dirs: ');
   const result = await page.evaluate((dirs: string[]) => {
     const result: any = {};
-
     console.log(dirs);
     const modules: any = window.WPP.whatsapp as any;
     for (const dir of dirs) {
-      console.log(dir);
+      console.log('Trying dir: ' + dir);
       const submodules = dir ? modules[dir] : modules;
       if (!submodules) {
         continue;
@@ -80,7 +77,7 @@ async function start() {
         result[resultName] = window.WPP.whatsapp._moduleIdMap.get(module);
       }
     }
-    console.log('antes do return');
+    console.log('Returning...');
 
     return result;
   }, dirs);
@@ -99,7 +96,7 @@ async function start() {
 
   let exitCode = 0;
 
-  console.log('browser fechado');
+  console.log('Browser closed');
   for (const moduleName of Object.keys(result)) {
     if (!result[moduleName]) {
       exitCode = 1;
