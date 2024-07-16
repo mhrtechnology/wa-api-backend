@@ -63,6 +63,7 @@ async function start() {
     console.log(dirs);
     const modules: any = window.WPP.whatsapp as any;
     for (const dir of dirs) {
+      console.log(dir);
       const submodules = dir ? modules[dir] : modules;
       if (!submodules) {
         continue;
@@ -79,6 +80,7 @@ async function start() {
         result[resultName] = window.WPP.whatsapp._moduleIdMap.get(module);
       }
     }
+    console.log('antes do return');
 
     return result;
   }, dirs);
@@ -86,6 +88,7 @@ async function start() {
   const version = await page
     .evaluate(() => (window as any).Debug.VERSION)
     .catch(() => null);
+  console.log(version);
 
   await browser.close();
 
@@ -96,6 +99,7 @@ async function start() {
 
   let exitCode = 0;
 
+  console.log('browser fechado');
   for (const moduleName of Object.keys(result)) {
     if (!result[moduleName]) {
       exitCode = 1;
