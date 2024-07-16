@@ -40,8 +40,6 @@ dirs.push(
 async function start() {
   const { browser, page } = await getPage();
 
-  page.unrouteAll({ behavior: 'ignoreErrors' });
-
   page.addInitScript(() => {
     setInterval(() => {
       (window as any).wppForceMainLoad = true;
@@ -58,11 +56,12 @@ async function start() {
     }
   });
 
+  console.log('Carregando dirs: ');
   const result = await page.evaluate((dirs: string[]) => {
     const result: any = {};
 
+    console.log(dirs);
     const modules: any = window.WPP.whatsapp as any;
-
     for (const dir of dirs) {
       const submodules = dir ? modules[dir] : modules;
       if (!submodules) {
