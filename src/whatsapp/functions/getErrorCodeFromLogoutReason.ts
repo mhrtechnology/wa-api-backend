@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2021 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
+import { LOGOUT_REASON_CODE, LogoutReason } from '../enums';
 import { exportModule } from '../exportModule';
 
 /**
- * @whatsapp 525438
+ * @whatsapp WAWebLogoutReason >= 2.3000.x
  */
-export declare function isLegitErrorStack(): boolean;
+export declare function getErrorCodeFromLogoutReason(
+  type: LogoutReason
+): LOGOUT_REASON_CODE | null;
 
 exportModule(
   exports,
   {
-    isLegitErrorStack: 'isLegitErrorStack',
+    getErrorCodeFromLogoutReason: 'getErrorCodeFromLogoutReason',
   },
-  (m) => m.isLegitErrorStack
+  (m) => m.getErrorCodeFromLogoutReason
 );

@@ -17,6 +17,7 @@
 import './registerAuthCodeChangeEvent';
 import './registerAuthenticatedEvent';
 import './registerLogoutEvent';
+import './registerLogoutReasonEvent';
 import './registerMainInit';
 import './registerMainLoadedEvent';
 import './registerMainReadyEvent';
