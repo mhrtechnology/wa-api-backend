@@ -26,7 +26,10 @@ import { createWid } from '../../util';
 import * as webpack from '../../webpack';
 import { Wid } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
-import { createMsgProtobuf } from '../../whatsapp/functions';
+import {
+  createFanoutMsgStanza,
+  createMsgProtobuf,
+} from '../../whatsapp/functions';
 
 /**
  * Send a payment request message
@@ -61,7 +64,7 @@ export async function request(
     author: getMyUserId()?._serialized as any,
     paymentAmount1000: options.value || 10000,
     paymentCurrency: 'BRL',
-    paymentExpiryTimestamp: 1719333155,
+    paymentExpiryTimestamp: options.expiryTimestamp,
     paymentMessageReceiverJid: jid,
     paymentNoteMsg: {
       type: 'chat',
@@ -82,11 +85,12 @@ webpack.onFullReady(() => {
   wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
     const [message] = args;
     const r = func(...args);
+
     if (message?.type == 'payment' && message?.subtype == 'request') {
       r.requestPaymentMessage = {
         currencyCodeIso4217: 'BRL',
         amount1000: message.paymentAmount1000,
-        expiryTimestamp: 1719333155,
+        expiryTimestamp: message.paymentExpiryTimestamp,
         requestFrom: message.to?.toString().replace('c.us', 's.whatsapp.net'),
         amount: {
           value: message.paymentAmount1000,
@@ -96,17 +100,18 @@ webpack.onFullReady(() => {
         noteMessage: {
           extendedTextMessage: {
             text: message.body,
-            contextInfo: {
-              externalAdReply: {
-                showAdAttribution: true,
-              },
-            },
           },
         },
       };
     }
     console.log(r);
     console.log(...args);
+    return r;
+  });
+  wrapModuleFunction(createFanoutMsgStanza, async (func, ...args) => {
+    console.log(...args);
+    const r = await func(...args);
+    console.log(r);
     return r;
   });
 });
